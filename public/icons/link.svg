@@ -1,0 +1,13 @@
+<!--?xml version="1.0" encoding="utf-8"?-->
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+  <rect width="32" height="32" fill="none"></rect>
+  <!-- chain left -->
+  <rect x="6" y="13" width="6" height="2" fill="#24202a"></rect>
+  <rect x="7" y="12" width="4" height="4" fill="#8b3cff"></rect>
+  <!-- chain right -->
+  <rect x="20" y="13" width="6" height="2" fill="#24202a"></rect>
+  <rect x="21" y="12" width="4" height="4" fill="#00d1ff"></rect>
+  <!-- connector -->
+  <rect x="13" y="13" width="6" height="2" fill="#2a2330"></rect>
+  <rect x="14" y="13" width="4" height="2" fill="#c8102e"></rect>
+</svg>

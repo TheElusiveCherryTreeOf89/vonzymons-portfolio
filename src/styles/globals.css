@@ -1,0 +1,728 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   GLOBAL DARK THEME — Hotline Miami × Wenders × Cherry Red
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Press+Start+2P&family=VT323&display=swap');
+
+/* ------------------------------
+   Base Theme Colors
+------------------------------ */
+:root {
+  --bg: #0b0710;
+  --panel: #0f1724;
+  --muted: #9aa3b2;
+  --accent: #C8102E; /* Cherry Red */
+  --scarlet: #9b0f1d;
+  --neon-pink: #ff4da6;
+  --neon-purple: #8b3cff;
+  --neon-blue: #00d1ff;
+  --neon-cyan: #00ffd5;
+  --hotline-purple: #9b1b9e;
+  --hotline-teal: #00b8a5;
+  --hotline-floor: #1a1a2e;
+}
+
+/* Always dark mode */
+html, body {
+  background: var(--bg);
+  color: #e6eef8;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Animated Vaporwave Sunset Grid Background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, 
+    #0a0a0a 0%, 
+    #1a0520 20%, 
+    #2d1b3d 45%, 
+    #ff4da6 80%, 
+    #ffb347 100%
+  );
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.25;
+  background-image: 
+    linear-gradient(to bottom, transparent 95%, rgba(255,77,166,0.4) 100%),
+    linear-gradient(to bottom, transparent 0%, rgba(200,16,46,0.2) 50%, transparent 100%),
+    repeating-linear-gradient(90deg, transparent, transparent 49px, rgba(255,77,166,0.3) 49px, rgba(255,77,166,0.3) 50px),
+    repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(139,60,255,0.2) 49px, rgba(139,60,255,0.2) 50px);
+  background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+  transform: perspective(500px) rotateX(60deg) translateY(20%);
+  transform-origin: center bottom;
+  animation: gridPulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gridPulse {
+  0%, 100% { transform: perspective(500px) rotateX(60deg) translateY(20%); }
+  50% { transform: perspective(500px) rotateX(60deg) translateY(22%); }
+}
+
+/* ---------------------------------------------------------
+   TYPOGRAPHY HELPERS
+--------------------------------------------------------- */
+.font-pixel {
+  font-family: 'Press Start 2P', monospace;
+  letter-spacing: .01em;
+}
+
+.font-term {
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+}
+
+.text-pixel {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
+  letter-spacing: .02em;
+}
+
+.small-terminal {
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+}
+
+/* Justice Laser webfont */
+@font-face {
+  font-family: "JusticeLaser";
+  src: url("/fonts/justicelaser.woff2") format("woff2");
+  font-display: swap;
+}
+
+.font-justice {
+  font-family: "JusticeLaser", "Press Start 2P", monospace;
+  letter-spacing: 0.02em;
+}
+
+/* ---------------------------------------------------------
+   UI UTILITIES
+--------------------------------------------------------- */
+.neon-outline {
+  position: relative;
+  box-shadow: 0 0 18px rgba(200,16,46,0.3), 0 0 50px rgba(139,60,255,0.2);
+}
+
+.panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  border: 1px solid rgba(255,255,255,0.04);
+  backdrop-filter: blur(6px);
+  border-radius: 1rem;
+}
+
+.neon-text {
+  text-shadow:
+    0 0 10px currentColor,
+    0 0 20px currentColor,
+    0 0 30px currentColor;
+}
+
+/* Chromatic aberration for titles */
+.chromatic {
+  position: relative;
+}
+.chromatic::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  top: 0;
+  color: var(--neon-pink);
+  z-index: -1;
+  mix-blend-mode: screen;
+  filter: blur(.4px);
+  opacity: .9;
+  transform: translateX(.5px);
+}
+
+.chromatic-edge::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 1px;
+  top: 0;
+  color: var(--neon-blue);
+  filter: blur(.4px);
+  z-index: -1;
+  opacity: .8;
+}
+
+/* ---------------------------------------------------------
+   VHS OVERLAY (FIXED - RE-ENABLED)
+--------------------------------------------------------- */
+.crt-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8998;
+  background-image: url("data:image/svg+xml;utf8,\
+  <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'>\
+    <defs>\
+      <radialGradient id='g' cx='50%' cy='50%' r='75%'>\
+        <stop offset='0%25' stop-color='rgba(255,255,255,0.01)'/>\
+        <stop offset='65%25' stop-color='rgba(0,0,0,0.25)'/>\
+        <stop offset='100%25' stop-color='rgba(0,0,0,0.6)'/>\
+      </radialGradient>\
+    </defs>\
+    <rect width='1200' height='800' fill='url(%23g)'/>\
+    <path d='M0,30 C200,80 1000,80 1200,30' stroke='rgba(255,77,166,0.05)' stroke-width='6' fill='none'/>\
+    <path d='M0,770 C200,720 1000,720 1200,770' stroke='rgba(0,209,255,0.03)' stroke-width='6' fill='none'/>\
+  </svg>");
+  background-size: cover;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+}
+
+.vhs-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000; /* lowered from 9999 */
+  opacity: 0;
+  transition: opacity .3s ease;
+  overflow: hidden;
+}
+
+.vhs-on .vhs-overlay { opacity: 1; }
+
+/* Scanlines */
+.vhs-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.03) 1px,
+      rgba(0,0,0,0.03) 1px,
+      rgba(0,0,0,0.03) 4px
+    );
+  mix-blend-mode: overlay;
+  transform: translateZ(0);
+  animation: scan 6s linear infinite;
+  z-index: 1;
+  box-shadow: 
+    inset 0 0 100px rgba(200, 16, 46, 0.2),
+    inset 0 0 60px rgba(255, 77, 166, 0.15),
+    inset 0 0 40px rgba(139, 60, 255, 0.1);
+}
+
+@keyframes scan {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(2px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Grain/noise layer */
+.vhs-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 3px 3px, 5px 5px;
+  opacity: 0.15;
+  mix-blend-mode: screen;
+  image-rendering: pixelated;
+  animation: noise 0.6s steps(8) infinite;
+  z-index: 2;
+}
+
+@keyframes noise {
+  0% { transform: translate(0,0); opacity:.14; }
+  10% { transform: translate(-1%, -1%); opacity:.16; }
+  20% { transform: translate(-2%, 0%); opacity:.13; }
+  30% { transform: translate(1%, -1%); opacity:.15; }
+  40% { transform: translate(1%, 2%); opacity:.14; }
+  50% { transform: translate(-1%, 1%); opacity:.16; }
+  60% { transform: translate(-2%, -1%); opacity:.13; }
+  70% { transform: translate(2%, 1%); opacity:.15; }
+  80% { transform: translate(-1%, -2%); opacity:.14; }
+  90% { transform: translate(1%, 0%); opacity:.16; }
+  100% { transform: translate(0, 0); opacity:.14; }
+}
+
+/* VHS tracking lines */
+.vhs-on .vhs-overlay::after {
+  background: 
+    linear-gradient(
+      transparent 0%, 
+      rgba(200, 16, 46, 0.08) 2%, 
+      transparent 3%, 
+      rgba(255, 77, 166, 0.06) 50%, 
+      transparent 51%, 
+      rgba(139, 60, 255, 0.08) 98%, 
+      transparent 100%
+    ), 
+    radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 100% 100vh, 3px 3px, 5px 5px;
+  animation: vhsTrackingLines 8s linear infinite, noise 0.6s steps(8) infinite;
+}
+
+@keyframes vhsTrackingLines {
+  0% { background-position: 0 -100vh, 0 0, 0 0; }
+  100% { background-position: 0 100vh, 0 0, 0 0; }
+}
+
+/* Color glitch effect */
+.vhs-on .color-glitch {
+  animation: colorShift 8s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes colorShift {
+  0%, 90%, 100% { text-shadow: none; }
+  92% { text-shadow: -2px 0 0 rgba(200,16,46,0.7), 2px 0 0 rgba(0,209,255,0.7); }
+  94% { text-shadow: 2px 0 0 rgba(200,16,46,0.7), -2px 0 0 rgba(0,209,255,0.7); }
+  96% { text-shadow: -2px 0 0 rgba(255,77,166,0.7), 2px 0 0 rgba(139,60,255,0.7); }
+  98% { text-shadow: none; }
+}
+
+/* Neon gradient overlay */
+.neon-gradient-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity .4s ease;
+  background:
+    radial-gradient(900px 500px at 10% 10%, rgba(200,16,46,0.25) 0%, transparent 60%),
+    radial-gradient(900px 500px at 90% 90%, rgba(0,209,255,0.2) 0%, transparent 60%),
+    linear-gradient(135deg, rgba(255,77,166,0.15), rgba(139,60,255,0.12));
+  filter: hue-rotate(0deg) saturate(1.2);
+  animation: hueCycle 18s linear infinite, gradientDrift 16s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+}
+.vhs-on .neon-gradient-overlay { opacity: 1; }
+
+@keyframes hueCycle {
+  0%   { filter: hue-rotate(0deg) saturate(1.2) brightness(1.05); }
+  50%  { filter: hue-rotate(180deg) saturate(1.3) brightness(1.08); }
+  100% { filter: hue-rotate(360deg) saturate(1.2) brightness(1.05); }
+}
+
+@keyframes gradientDrift {
+  0%   { transform: translate3d(0,0,0) scale(1); }
+  100% { transform: translate3d(-2%,2%,0) scale(1.03); }
+}
+
+/* ---------------------------------------------------------
+   HOTLINE MIAMI SPECIFIC STYLES
+--------------------------------------------------------- */
+.pixel-icon {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 6px 12px rgba(200,16,46,0.3));
+}
+
+.hotline-grid {
+  background-image: 
+    linear-gradient(rgba(255, 77, 166, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 77, 166, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center center;
+  position: relative;
+}
+
+.hotline-floor {
+  background-color: var(--hotline-floor);
+  background-image: 
+    linear-gradient(45deg, rgba(200, 16, 46, 0.05) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(200, 16, 46, 0.05) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(200, 16, 46, 0.05) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(200, 16, 46, 0.05) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.pixel-card {
+  border: 4px solid var(--neon-pink);
+  box-shadow: 
+    0 0 0 4px rgba(200,16,46,0.3),
+    0 0 20px rgba(255, 77, 166, 0.5),
+    inset 0 0 20px rgba(139, 60, 255, 0.1);
+  image-rendering: pixelated;
+  transform: scale(1);
+  transition: all 0.3s ease;
+  background: rgba(0,0,0,0.8);
+  max-width: 520px; /* increased */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+
+.pixel-card:hover {
+  transform: scale(1.05);
+  box-shadow: 
+    0 0 0 4px rgba(200,16,46,0.5),
+    0 0 30px rgba(255, 77, 166, 0.8),
+    inset 0 0 30px rgba(139, 60, 255, 0.2);
+}
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Cherry Red utilities */
+.text-cherry-red {
+  color: #C8102E;
+}
+
+.cherry-shadow {
+  text-shadow: 0 0 15px #C8102E, 0 0 30px #C8102E, 0 0 45px #ff4da6;
+}
+
+/* Neon pulsing effect */
+.neon-pulse {
+  animation: neonPulse 2s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+  0%, 100% { 
+    box-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+  }
+  50% { 
+    box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink), 0 0 60px var(--accent);
+  }
+}
+
+/* Hotline text glow */
+.hotline-text {
+  color: white;
+  text-shadow: 
+    0 0 8px var(--neon-pink),
+    0 0 15px var(--neon-pink),
+    0 0 25px var(--neon-purple);
+  animation: textGlow 4s ease-in-out infinite;
+}
+
+@keyframes textGlow {
+  0%, 100% { 
+    text-shadow: 
+      0 0 8px var(--neon-pink),
+      0 0 15px var(--neon-pink),
+      0 0 25px var(--neon-purple);
+  }
+  50% { 
+    text-shadow: 
+      0 0 12px var(--neon-pink),
+      0 0 25px var(--neon-pink),
+      0 0 40px var(--neon-purple),
+      0 0 50px var(--accent);
+  }
+}
+
+/* Hotline hover effect */
+.hotline-hover {
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.hotline-hover:hover {
+  transform: scale(1.05);
+  color: white;
+  text-shadow: 0 0 10px var(--neon-pink);
+}
+
+/* Glitch animations */
+.color-glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.color-glitch::before,
+.color-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.color-glitch::before {
+  color: var(--neon-pink);
+  z-index: -1;
+  animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.color-glitch::after {
+  color: var(--neon-blue);
+  z-index: -2;
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+@keyframes glitch-anim-2 {
+  0%, 100% { transform: translate(0); }
+  25% { transform: translate(2px, 0); }
+  50% { transform: translate(-2px, 2px); }
+  75% { transform: translate(-2px, -2px); }
+}
+
+/* Old TV turn-on animation */
+.old-tv {
+  animation: oldTvOn 800ms ease-out both;
+  will-change: filter, transform, opacity;
+}
+
+@keyframes oldTvOn {
+  0%   { opacity: 0; filter: blur(8px) contrast(0.6) saturate(0.8); transform: scale(1.08) skewX(0.8deg); }
+  20%  { opacity: 0.6; filter: blur(6px) contrast(0.8) saturate(1.2); transform: scale(1.02) skewX(-0.6deg); }
+  40%  { opacity: 0.9; filter: blur(4px) contrast(1.1) saturate(1.3); transform: scale(1.01) skewX(0.3deg); }
+  60%  { opacity: 1; filter: blur(2px) contrast(1.2) saturate(1.4); transform: scale(1.0) skewX(0deg); }
+  80%  { opacity: 1; filter: blur(1px) contrast(1.15) saturate(1.35); }
+  100% { opacity: 1; filter: blur(0px) contrast(1.0) saturate(1.1); }
+}
+
+.crt-stutter {
+  will-change: transform, opacity;
+  animation: stutter 7s ease-in-out infinite;
+}
+
+@keyframes stutter {
+  0%, 92%, 100% { transform: translateX(0); opacity: 1; }
+  93% { transform: translateX(-2px); opacity: .97; }
+  94% { transform: translateX(2px); opacity: .97; }
+  95% { transform: translateX(-1px); opacity: 1; }
+  96% { transform: translateX(1px); opacity: 1; }
+}
+
+/* ---------------------------------------------------------
+   Z-INDEX HIERARCHY
+--------------------------------------------------------- */
+header, main, footer, .panel, nav {
+  position: relative;
+  z-index: 100;
+}
+
+.pixel-card, .project-card {
+  position: relative;
+  z-index: 50;
+}
+
+/* ---------------------------------------------------------
+   Neon Kitchen background slideshow (tamed)
+   - Subtle background highlight that sits *behind* content
+   - Includes a dark overlay so UI stays readable
+   - Uses 5 images at /public/images/background_slides{1..5}.png
+--------------------------------------------------------- */
+
+.vhs-bg-slideshow {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0; /* sit behind page content (content panels use z-index:100) */
+  opacity: 0;
+  transition: opacity .35s ease;
+  overflow: hidden;
+  will-change: opacity;
+}
+
+/* visible only when neon kitchen is on */
+.vhs-on .vhs-bg-slideshow {
+  opacity: 1;
+}
+
+/* dark overlay so slides never overpower UI */
+.vhs-bg-slideshow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45); /* tweak to taste: 0.45 keeps slides visible but dims them */
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: normal;
+}
+
+/* Each slide covers the viewport */
+.vhs-bg-slideshow .slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1.02);
+  will-change: opacity, transform;
+  filter: saturate(1.03) contrast(1.02) blur(0px);
+  z-index: 1; /* keep slides under the overlay (::after) */
+}
+
+/* image sources — change extension if your images are .jpg */
+.vhs-bg-slideshow .slide.s1 { background-image: url("/images/background_slides (1).png"); }
+.vhs-bg-slideshow .slide.s2 { background-image: url("/images/background_slides (2).png"); }
+.vhs-bg-slideshow .slide.s3 { background-image: url("/images/background_slides (3).png"); }
+.vhs-bg-slideshow .slide.s4 { background-image: url("/images/background_slides (4).png"); }
+.vhs-bg-slideshow .slide.s5 { background-image: url("/images/background_slides (5).png"); }
+
+/* crossfade animation — total cycle 25s (5s per slide visible)
+   Note: peak opacity is intentionally low (0.28) so slides are background accents */
+@keyframes slideFadeTamed {
+  0%   { opacity: 0; transform: scale(1.02); }
+  6%   { opacity: 0.28; transform: scale(1.0); }
+  22%  { opacity: 0.28; transform: scale(1.0); }
+  26%  { opacity: 0; transform: scale(0.98); }
+  100% { opacity: 0; transform: scale(0.98); }
+}
+
+.vhs-bg-slideshow .slide {
+  animation: slideFadeTamed 25s linear infinite;
+  animation-timing-function: ease-in-out;
+}
+
+/* stagger each slide by 5s */
+.vhs-bg-slideshow .slide.s1 { animation-delay: 0s; }
+.vhs-bg-slideshow .slide.s2 { animation-delay: 5s; }
+.vhs-bg-slideshow .slide.s3 { animation-delay: 10s; }
+.vhs-bg-slideshow .slide.s4 { animation-delay: 15s; }
+.vhs-bg-slideshow .slide.s5 { animation-delay: 20s; }
+
+/* keep blending subtle — remove heavy screen blending so colors don't wash UI */
+.vhs-bg-slideshow .slide {
+  mix-blend-mode: normal;
+  /* base opacity is controlled via animation — additional multiplier here if needed */
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .vhs-bg-slideshow,
+  .vhs-bg-slideshow .slide {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+
+/* ---------------------------------------------------------
+   MISC UTILITIES
+--------------------------------------------------------- */
+.modal-safe-top { padding-top: env(safe-area-inset-top, 12px); }
+
+/* ensure the Projects page acts as the bounds for absolute modal positioning */
+.pages-projects-container { position: relative; }
+
+/* optional: slightly increase handle hit area on touch devices */
+.draggable-modal .modal-header { -webkit-user-select: none; user-select: none; }
+
+/* Reveal on scroll: fade + subtle slide-up with stagger support */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 520ms cubic-bezier(.22,.9,.28,1), transform 520ms cubic-bezier(.22,.9,.28,1);
+  will-change: opacity, transform;
+}
+
+/* When JS adds .revealed the element animates in */
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slight stagger helper: you can set data-delay on elements to control per-item delay */
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll,
+  .reveal-on-scroll.revealed {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Ensure pixel-card doesn't force full height and children can shrink */
+.pixel-card {
+  height: auto !important;  /* make intrinsic */
+  min-height: 0;            /* allow grid rows to shrink */
+  align-items: flex-start;  /* content sits at top unless you override per-page */
+}
+
+/* ensure inner wrapper won't force min-height */
+.pixel-card > div {
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+.pixel-card { outline: 1px dashed lime !important; }
+.pixel-card > div { outline: 1px dotted cyan !important; }
+
+/* Make sure grid items can shrink (safety) */
+.grid > .pixel-card, .grid > button.pixel-card {
+  min-height: 0;
+  align-self: start; /* double-safety for grid children */
+}
+
+/* project emoji sizing (balanced for compact cards) */
+.project-emoji {
+  font-size: 56px; /* default */
+  line-height: 1;
+}
+@media (min-width: 768px) {
+  .project-emoji { font-size: 76px; }
+}
+@media (min-width: 1024px) {
+  .project-emoji { font-size: 84px; }
+}
+
+
+/* medium screens */
+@media (min-width: 768px) {
+  .project-emoji { font-size: 68px; }
+}
+
+/* larger screens */
+@media (min-width: 1024px) {
+  .project-emoji { font-size: 84px; }
+}
+
+/* Optional: slightly reduce pixel-card max-width on very large screens so cards don't grow overly wide */
+@media (min-width: 1280px) {
+  .pixel-card { max-width: 420px; }
+}
+
+
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+@media (max-width: 640px) {
+  .font-pixel { font-size: 0.62rem; }
+  .crt-vignette { opacity: 0.1; }
+  .pixel-card { max-width: 100%; }
+}
+
+@media (min-width: 1024px) {
+  .pixel-card { max-width: 380px; }
+}
