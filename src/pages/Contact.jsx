@@ -2,7 +2,13 @@
 import React, { useState } from "react";
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "", hp: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+    hp: "",
+  });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
 
@@ -19,102 +25,223 @@ export default function Contact() {
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    if (form.hp) { setStatus("success"); return; } // honeypot
-    const e = validate(); setErrors(e); if (Object.keys(e).length) return;
+    // honeypot check
+    if (form.hp) {
+      setStatus("success");
+      setForm({ name: "", email: "", subject: "", message: "", hp: "" });
+      return;
+    }
+
+    const e = validate();
+    setErrors(e);
+    if (Object.keys(e).length) return;
+
     setStatus("sending");
-    // mailto fallback
     try {
       const subject = encodeURIComponent(form.subject || "Message from portfolio");
       const body = encodeURIComponent(`${form.message}\n\n— ${form.name} (${form.email})`);
-      window.location.href = `mailto:you@domain.tld?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:bjv.jkv@gmail.com?subject=${subject}&body=${body}`;
       setStatus("success");
       setForm({ name: "", email: "", subject: "", message: "", hp: "" });
-    } catch (err) {
-      console.error(err);
+    } catch {
       setStatus("error");
     }
   };
 
+  const redBarStyle = {
+    backgroundColor: "rgba(200,16,46,0.15)",
+    color: "#fff",
+    fontWeight: 700,
+    padding: "10px 12px",
+    fontFamily: "'Press Start 2P', monospace",
+    fontSize: "0.75rem",
+    letterSpacing: "0.05em",
+    border: "3px solid rgb(200,16,46)",
+    outline: "none",
+    height: 48,
+    borderRadius: 0,
+    boxSizing: "border-box",
+  };
+
+  const framedTextareaStyle = {
+    background: "rgba(255,255,255,0.08)",
+    color: "#fff",
+    padding: 16,
+    fontFamily: "'Arial', sans-serif",
+    fontSize: "0.95rem",
+    border: "4px solid rgb(200,16,46)",
+    outline: "none",
+    resize: "vertical",
+    minHeight: 180,
+    borderRadius: 0,
+    boxSizing: "border-box",
+  };
+
   return (
-    <div className="min-h-screen bg-transparent px-6 py-12">
-      <div className="max-w-4xl mx-auto grid gap-16">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+      <div className="w-full" style={{ maxWidth: "850px" }}>
+        {/* Page Header */}
+        <header className="text-center mb-8">
+          <h1
+            className="font-justice crt-stutter old-tv neon-text"
+            style={{
+              fontSize: "2.6rem",
+              lineHeight: 1,
+              marginBottom: 6,
+              color: "var(--neon-pink)",
+            }}
+            data-text="CONTACT"
+          >
+            CONTACT
+          </h1>
 
-        {/* HERO: Header */}
-        <section className="text-center">
-          <h1 className="font-pixel text-4xl neon-text mb-3" style={{ color: "var(--neon-pink)" }}>CONTACT</h1>
-          <p className="font-term text-sm max-w-2xl mx-auto" style={{ color: "var(--neon-cyan)", lineHeight: 1.6 }}>
-            Have a project idea or question? Send a short message and I’ll respond as soon as I can.
+          <p
+            className="font-term text-sm sm:text-base"
+            style={{ color: "var(--neon-cyan)" }}
+          >
+            Have a project idea or question? Send a short message and I'll respond as soon as I can.
           </p>
-        </section>
+        </header>
 
-        {/* HERO: Focused form panel (narrower) */}
-        <section className="mx-auto w-full max-w-3xl">
-          <div className="panel rounded-2xl p-10">
-            <form onSubmit={handleSubmit} noValidate>
-              <input type="text" name="hp" value={form.hp} onChange={onChange("hp")} style={{ display: "none" }} tabIndex="-1" autoComplete="off" />
+        {/* Form Container */}
+        <form onSubmit={handleSubmit} noValidate className="space-y-3">
+          {/* Honeypot */}
+          <input
+            type="text"
+            name="hp"
+            value={form.hp}
+            onChange={onChange("hp")}
+            style={{ display: "none" }}
+            tabIndex="-1"
+            autoComplete="off"
+            aria-hidden="true"
+          />
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="font-pixel text-xs block mb-2" style={{ color: "var(--neon-pink)" }}>Name</label>
-                  <input className="w-full panel p-3" value={form.name} onChange={onChange("name")} aria-invalid={!!errors.name} />
-                  {errors.name && <div className="font-term text-xs mt-1" style={{ color: "#ffb3c9" }}>{errors.name}</div>}
-                </div>
-
-                <div>
-                  <label className="font-pixel text-xs block mb-2" style={{ color: "var(--neon-blue)" }}>Email</label>
-                  <input className="w-full panel p-3" value={form.email} onChange={onChange("email")} aria-invalid={!!errors.email} />
-                  {errors.email && <div className="font-term text-xs mt-1" style={{ color: "#ffb3c9" }}>{errors.email}</div>}
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <label className="font-pixel text-xs block mb-2" style={{ color: "var(--neon-pink)" }}>Subject</label>
-                <input className="w-full panel p-3" value={form.subject} onChange={onChange("subject")} />
-              </div>
-
-              <div className="mt-4">
-                <label className="font-pixel text-xs block mb-2" style={{ color: "var(--neon-pink)" }}>Message</label>
-                <textarea className="w-full panel p-3 min-h-[160px]" value={form.message} onChange={onChange("message")} />
-                {errors.message && <div className="font-term text-xs mt-1" style={{ color: "#ffb3c9" }}>{errors.message}</div>}
-              </div>
-
-              <div className="mt-6 flex items-center gap-4">
-                <button type="submit" className="font-pixel px-6 py-3 border-2 rounded" style={{ borderColor: "var(--neon-pink)", color: "var(--neon-pink)" }} disabled={status === "sending"}>
-                  {status === "sending" ? "SENDING..." : "SEND MESSAGE"}
-                </button>
-
-                <div className="font-term text-xs" style={{ color: "var(--neon-cyan)" }}>
-                  {status === "success" && <span style={{ color: "var(--accent)" }}>Message sent — thank you!</span>}
-                  {status === "error" && <span style={{ color: "#ffb3c9" }}>Something went wrong. Try again later.</span>}
-                </div>
-              </div>
-            </form>
-          </div>
-        </section>
-
-        {/* HERO: Contact details & socials */}
-        <section className="panel rounded-2xl p-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <div className="font-pixel text-xs mb-2" style={{ color: "var(--neon-blue)" }}>CONTACT INFO</div>
-              <div className="font-term text-sm" style={{ color: "var(--neon-cyan)", lineHeight: 1.6 }}>
-                <div>Email: <a href="mailto:you@domain.tld" style={{ color: "var(--accent)" }}>you@domain.tld</a></div>
-                <div>Availability: Open for freelance</div>
-                <div className="mt-2">Timezone: Asia/Manila (UTC+08:00)</div>
-              </div>
+          {/* NAME */}
+          <div>
+            <div className="font-pixel text-xs" style={{ color: "#fff", backgroundColor: "rgba(200,16,46,0.3)", padding: "8px 12px", fontWeight: 700 }}>
+              NAME:
             </div>
-
-            <div>
-              <div className="font-pixel text-xs mb-2" style={{ color: "var(--neon-pink)" }}>SOCIAL</div>
-              <div className="flex flex-col gap-2">
-                <a href="https://github.com/your-username" target="_blank" rel="noreferrer" className="font-pixel" style={{ color: "var(--neon-pink)" }}>🐙 GitHub</a>
-                <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noreferrer" className="font-pixel" style={{ color: "var(--neon-blue)" }}>in / LinkedIn</a>
-                <a href="mailto:you@domain.tld" className="font-pixel" style={{ color: "var(--accent)" }}>✉️ Email</a>
+            <input
+              id="name"
+              name="name"
+              value={form.name}
+              onChange={onChange("name")}
+              placeholder=""
+              className="w-full"
+              aria-invalid={!!errors.name}
+              style={{ ...redBarStyle, borderTop: "none" }}
+            />
+            {errors.name && (
+              <div className="font-term text-xs mt-1" style={{ color: "#ffb3c9" }}>
+                {errors.name}
               </div>
-            </div>
+            )}
           </div>
-        </section>
 
+          {/* EMAIL */}
+          <div>
+            <div className="font-pixel text-xs" style={{ color: "#fff", backgroundColor: "rgba(200,16,46,0.3)", padding: "8px 12px", fontWeight: 700 }}>
+              EMAIL:
+            </div>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={onChange("email")}
+              placeholder=""
+              className="w-full"
+              aria-invalid={!!errors.email}
+              style={{ ...redBarStyle, borderTop: "none" }}
+            />
+            {errors.email && (
+              <div className="font-term text-xs mt-1" style={{ color: "#ffb3c9" }}>
+                {errors.email}
+              </div>
+            )}
+          </div>
+
+          {/* SUBJECT */}
+          <div>
+            <div className="font-pixel text-xs" style={{ color: "#fff", backgroundColor: "rgba(200,16,46,0.3)", padding: "8px 12px", fontWeight: 700 }}>
+              SUBJECT:
+            </div>
+            <input
+              id="subject"
+              name="subject"
+              value={form.subject}
+              onChange={onChange("subject")}
+              placeholder=""
+              className="w-full"
+              style={{ ...redBarStyle, borderTop: "none" }}
+            />
+          </div>
+
+          {/* MESSAGE */}
+          <div>
+            <textarea
+              id="message"
+              name="message"
+              value={form.message}
+              onChange={onChange("message")}
+              placeholder="Enter your message here..."
+              className="w-full"
+              style={framedTextareaStyle}
+              aria-invalid={!!errors.message}
+            />
+            {errors.message && (
+              <div className="font-term text-xs mt-1" style={{ color: "#ffb3c9" }}>
+                {errors.message}
+              </div>
+            )}
+          </div>
+
+          {/* SUBMIT BUTTON */}
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              className="font-pixel px-5 py-2 border-4 w-full"
+              style={{
+                borderColor: "rgb(200,16,46)",
+                color: "rgb(200,16,46)",
+                background: "transparent",
+                textAlign: "center",
+                fontSize: "0.9rem",
+                borderRadius: 0,
+              }}
+              aria-live="polite"
+            >
+              {status === "sending" ? "SENDING..." : "SEND MESSAGE"}
+            </button>
+          </div>
+
+          {/* Status Messages */}
+          {status === "success" && (
+            <div className="font-term text-sm text-center pt-1" style={{ color: "var(--accent)" }}>
+              Message sent — thank you!
+            </div>
+          )}
+          {status === "error" && (
+            <div className="font-term text-sm text-center pt-1" style={{ color: "#ffb3c9" }}>
+              Error sending message.
+            </div>
+          )}
+        </form>
+
+        {/* SOCIALS */}
+        <div className="mt-10 text-center">
+          <div className="font-pixel mb-4 text-base sm:text-lg" style={{ color: "var(--neon-pink)" }}>
+            SOCIAL LINKS
+          </div>
+          <div className="flex justify-center gap-8 sm:gap-12">
+            <a href="tel:+63927384011" aria-label="Call" className="hover:scale-110 transition-transform" style={{ fontSize: "4rem" }}>📞</a>
+            <a href="https://www.instagram.com/bigvjkv_dabloominberries/" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:scale-110 transition-transform" style={{ fontSize: "4rem" }}>📸</a>
+            <a href="https://github.com/TheElusiveCherryTreeOf89" target="_blank" rel="noreferrer" aria-label="GitHub" className="hover:scale-110 transition-transform" style={{ fontSize: "4rem" }}>💻</a>
+            <a href="mailto:bjv.jkv@gmail.com" aria-label="Email" className="hover:scale-110 transition-transform" style={{ fontSize: "4rem" }}>✉️</a>
+          </div>
+        </div>
       </div>
     </div>
   );

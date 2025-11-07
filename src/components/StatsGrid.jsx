@@ -14,7 +14,7 @@ export default function StatsGrid() {
 
   const stats = [
     { label: "PROJECTS", value: PROJECTS.length.toString().padStart(2, "0"), color: "var(--neon-pink)" },
-    { label: "SKILLS", value: "12+", color: "var(--neon-blue)" },
+    { label: "SKILLS", value: "8", color: "var(--neon-blue)" },
     { label: "GRADE", value: "B+", color: "var(--accent)" },
     { label: "NEON KITCHEN MODE", value: vhsStatus ? "ON" : "OFF", color: vhsStatus ? "var(--neon-cyan)" : "var(--muted)" }
   ];

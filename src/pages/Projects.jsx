@@ -9,7 +9,7 @@ export default function Projects() {
   const pageRef = useRef(null);
 
   return (
-    <div ref={pageRef} className="min-h-screen relative px-6 py-12">
+    <div ref={pageRef} className="min-h-screen relative px-6 py-12 pages-projects-container">
       {/* Page Header */}
       <div className="max-w-6xl mx-auto mb-12 text-center">
         <h1
@@ -24,21 +24,20 @@ export default function Projects() {
         </p>
       </div>
 
-      {/* Project Grid: responsive auto-fit — keeps proportion and spacing */}
+      {/* Project Grid */}
       <section className="max-w-6xl mx-auto">
         <div
-          className="grid gap-8 md:gap-10 lg:gap-12 items-start justify-items-center"
-          style={{
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gridAutoRows: "auto" // <- ensures rows size to content
-          }}
+          className="project-grid grid gap-8 md:gap-10 lg:gap-12 items-start justify-items-center"
+          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}
         >
           {PROJECTS.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              onOpen={setSelectedProject}
-            />
+            // wrapper enforces consistent height per card (responsive)
+            <div key={project.id} className="card-wrapper w-full">
+              <ProjectCard
+                project={project}
+                onOpen={setSelectedProject}
+              />
+            </div>
           ))}
         </div>
 
@@ -55,7 +54,7 @@ export default function Projects() {
         )}
       </section>
 
-      {/* Draggable / Resizable Modal (constrained inside Projects page) */}
+      {/* Draggable / Resizable Modal */}
       {selectedProject && (
         <DraggableResizableModal
           project={selectedProject}

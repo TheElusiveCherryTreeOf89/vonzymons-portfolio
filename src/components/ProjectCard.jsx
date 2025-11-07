@@ -5,16 +5,16 @@ export default function ProjectCard({ project, onOpen }) {
   return (
     <button
       onClick={() => onOpen(project)}
-      className="w-full pixel-card self-start group relative overflow-hidden md:max-w-[360px] flex flex-col items-center justify-start"
+      className="w-full pixel-card group relative overflow-hidden flex flex-col h-full"
       aria-label={`Open project ${project.title}`}
     >
-      {/* content wrapper - intrinsic height */}
-      <div className="w-full flex flex-col items-center justify-center gap-3 text-center px-4 py-6">
-        {/* emoji/icon (flex-none so it doesn't stretch) */}
+      {/* main content (fills available space) */}
+      <div className="w-full flex flex-col items-center justify-center gap-4 text-center px-6 py-6 flex-grow">
+        {/* enlarged emoji/icon */}
         <div
           className="project-emoji flex-none transition-transform group-hover:scale-105 will-change-transform"
           style={{
-            filter: "drop-shadow(0 6px 18px rgba(255,77,166,0.22))",
+            filter: "drop-shadow(0 8px 22px rgba(255,77,166,0.26))",
             lineHeight: 1
           }}
           aria-hidden="true"
@@ -22,9 +22,9 @@ export default function ProjectCard({ project, onOpen }) {
           {project.icon || "📁"}
         </div>
 
-        {/* Title */}
+        {/* Title — larger */}
         <h3
-          className="font-pixel text-base md:text-lg neon-text truncate"
+          className="font-pixel text-lg md:text-2xl neon-text truncate"
           style={{ color: "var(--neon-blue)", maxWidth: "92%" }}
         >
           {project.title}
@@ -32,38 +32,39 @@ export default function ProjectCard({ project, onOpen }) {
 
         {/* Short desc */}
         <p
-          className="font-term text-xs md:text-sm text-center line-clamp-2"
+          className="font-term text-sm md:text-base text-center line-clamp-2"
           style={{ color: "var(--neon-cyan)", maxWidth: "86%" }}
         >
           {project.shortDesc}
         </p>
+      </div>
 
-        {/* tags - flex-none so they sit right after content */}
-        <div className="flex flex-wrap gap-2 justify-center mt-2 flex-none">
+      {/* footer (tags + CTA) */}
+      <div className="w-full px-5 pb-5 flex flex-col items-center gap-3">
+        <div className="flex flex-wrap gap-2 justify-center">
           {project.tags?.slice(0, 3).map((tag, i) => (
             <span
               key={i}
-              className="font-pixel px-2 py-1 text-[10px] rounded"
+              className="font-pixel px-2 py-1 text-[11px] rounded"
               style={{ background: "var(--accent)", color: "#fff" }}
             >
               {tag}
             </span>
           ))}
         </div>
-      </div>
 
-      {/* small footer area for "view" label (not pushing layout) */}
-      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        <span
-          className="font-pixel text-xs px-3 py-1 border-2 rounded"
-          style={{
-            borderColor: "var(--neon-pink)",
-            color: "var(--neon-pink)",
-            background: "rgba(255,77,166,0.06)"
-          }}
-        >
-          VIEW DETAILS
-        </span>
+        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+          <span
+            className="font-pixel text-xs px-3 py-1 border-2 rounded"
+            style={{
+              borderColor: "var(--neon-pink)",
+              color: "var(--neon-pink)",
+              background: "rgba(255,77,166,0.06)"
+            }}
+          >
+            VIEW DETAILS
+          </span>
+        </div>
       </div>
 
       {/* decorative border */}

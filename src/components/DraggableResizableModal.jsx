@@ -181,7 +181,16 @@ export default function DraggableResizableModal({ project, onClose, containerRef
   };
 
   /* Slideshow helpers */
-  const slides = project?.screenshots ?? [];
+  // Normalize slide URLs: if string starts with "/" or "http" use it, otherwise prefix with /images/
+  const slides = (project?.screenshots ?? []).map((s) => {
+    if (!s) return "";
+    const trimmed = String(s).trim();
+    // already absolute or starts with slash
+    if (/^(https?:)?\/\//i.test(trimmed) || trimmed.startsWith("/")) return encodeURI(trimmed);
+    // otherwise assume /images/
+    return `/images/${encodeURI(trimmed)}`;
+  });
+
   const nextSlide = () => setCurrentSlide((s) => (slides.length ? (s === slides.length - 1 ? 0 : s + 1) : 0));
   const prevSlide = () => setCurrentSlide((s) => (slides.length ? (s === 0 ? slides.length - 1 : s - 1) : 0));
   useEffect(() => setCurrentSlide(0), [project?.id]);
@@ -243,7 +252,7 @@ export default function DraggableResizableModal({ project, onClose, containerRef
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           {/* Grab icon */}
           <div style={{ width: 18, height: 18, display: "grid", placeItems: "center", opacity: 0.9 }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M9 3v2M3 9h2M9 21v-2M21 15h-2M14 3v2M3 15h2M14 21v-2M21 9h-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--neon-pink)" }} />
             </svg>
           </div>
@@ -294,7 +303,26 @@ export default function DraggableResizableModal({ project, onClose, containerRef
         {slides.length > 0 && (
           <div style={{ marginBottom: 12 }}>
             <div style={{ position: "relative", width: "100%", height: 220, overflow: "hidden", borderRadius: 8, border: "1px solid rgba(255,255,255,0.04)" }}>
-              <img src={slides[currentSlide]} alt={`${project.title} screenshot ${currentSlide + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <img
+                src={slides[currentSlide] || '/images/placeholder.png'}
+                alt={`${project.title} screenshot ${currentSlide + 1}`}
+                style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                onError={(e) => {
+                  // show an inline SVG placeholder if the image fails to load
+                  console.warn("Failed to load project screenshot:", e.currentTarget.src);
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src =
+                    'data:image/svg+xml;utf8,' +
+                    encodeURIComponent(
+                      `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700">
+                        <rect width="100%" height="100%" fill="#0b0710"/>
+                        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+                        fill="#666" font-family="VT323, monospace" font-size="24">
+                          Screenshot not found
+                        </text></svg>`
+                    );
+                }}
+              />
               <div style={{ position: "absolute", top: 8, right: 8, fontFamily: "'Press Start 2P', monospace", fontSize: 12, padding: "6px 8px", borderRadius: 6, background: "rgba(0,0,0,0.6)", border: "1px solid var(--neon-pink)", color: "var(--neon-pink)" }}>
                 {currentSlide + 1} / {slides.length}
               </div>
