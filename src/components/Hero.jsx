@@ -1,14 +1,29 @@
 // src/components/Hero.jsx
 import React from "react";
+import { toggleVhs } from "../lib/theme";
 
 export default function Hero() {
+  const handleToggle = () => {
+    toggleVhs();
+  };
+
   return (
     <section className="w-full max-w-6xl mx-auto text-center mb-16 py-8">
-      {/* Main Title with Glitch Effect */}
+      {/* Main Title with Glitch Effect - Clickable */}
       <div className="crt-stutter mb-4">
         <h1
-          className="font-justice text-5xl sm:text-6xl md:text-7xl lg:text-8xl neon-text color-glitch old-tv"
+          className="font-justice text-5xl sm:text-6xl md:text-7xl lg:text-8xl neon-text color-glitch old-tv cursor-pointer transition-transform hover:scale-105"
           data-text="ネオンキッチン 2025"
+          onClick={handleToggle}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleToggle();
+            }
+          }}
+          aria-label="Toggle Neon Kitchen mode"
           style={{
             color: 'var(--neon-pink)',
             textShadow: `
@@ -25,9 +40,19 @@ export default function Hero() {
         </h1>
       </div>
 
-      {/* Subtitle */}
+      {/* Subtitle - Clickable */}
       <h2
-        className="font-justice text-3xl sm:text-4xl md:text-5xl lg:text-6xl neon-text mt-6"
+        className="font-justice text-3xl sm:text-4xl md:text-5xl lg:text-6xl neon-text mt-6 cursor-pointer transition-transform hover:scale-105"
+        onClick={handleToggle}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleToggle();
+          }
+        }}
+        aria-label="Toggle Neon Kitchen mode"
         style={{
           color: 'var(--neon-blue)',
           textShadow: `
@@ -40,7 +65,7 @@ export default function Hero() {
         VON ZYMON'S WEB PORTFOLIO
       </h2>
 
-      {/* VHS Toggle Hint */}
+      {/* VHS Toggle Hint - Updated text */}
       <div className="mt-8">
         <p
           className="font-pixel text-xs sm:text-sm neon-pulse inline-block px-6 py-3 border-2"
@@ -50,7 +75,7 @@ export default function Hero() {
             background: 'rgba(255, 77, 166, 0.1)'
           }}
         >
-          [ PRESS 'V' TO TOGGLE "NEON KITCHEN" MODE ]
+          [ PRESS 'V' OR CLICK TITLE TO TOGGLE "NEON KITCHEN" MODE ]
         </p>
       </div>
 

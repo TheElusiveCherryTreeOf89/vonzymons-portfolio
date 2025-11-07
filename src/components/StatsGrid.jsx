@@ -70,7 +70,7 @@ export default function StatsGrid() {
 
       <div className="mt-10 text-center">
         <p className="font-term text-xs tracking-wide" style={{ color: "var(--neon-cyan)" }}>
-          [ HOTLINE MIAMI INSPIRED STATS • PRESS V TO TOGGLE NEON KITCHEN ]
+          [HOTLINE MIAMI INSPIRED "PLAYER STATS"]
         </p>
       </div>
     </section>
